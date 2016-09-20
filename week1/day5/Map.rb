@@ -41,6 +41,7 @@ class Map
 		nil
 	end
 
+	# Will need to replace dup with deep_dup
 	def show
 		@map.dup
 	end
