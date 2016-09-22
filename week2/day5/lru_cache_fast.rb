@@ -1,66 +1,74 @@
-# Slow version
+require_relative "dbl_linked_list"
+
 class LRUCache
-  def initialize(n)
-    @max = n
-    @els = []
-  end
+	def initialize(n)
+		@max = n
+		@els = {}
+		@nodes = DblLinkedList.new
+	end
 
-  def count
+	def count
 		@els.size
-  end
+	end
 
-  def add(el)
-		if count == @max
-			@els.shift unless @els.first == el
+	def add(el)
+		if @els[el]
+			@nodes.push_back(@nodes.delete(@els[el]).value)
+			return
 		end
 
-		for i in 0...@els.size
-			if @els[i] == el
-				@els << @els.delete_at(i)
-				return
-			end
+		if @els.size == @max
+			shifted = @nodes.pop_front
+			@els.delete(shifted.value)
 		end
 
-		@els << el
+		@nodes.push_back(el)
+		@els[el] = @nodes.back_iter
+	end
 
-  end
-
-  def show
-    p @els 
-  end
+	def show
+		@nodes.display
+	end
 end
 
 if __FILE__ == $PROGRAM_NAME
 
-=begin
 	l = LRUCache.new(3)
 	p l.count
 	l.show
+	puts
 	l.add(5)
 	p l.count
 	l.show
+	puts
 	l.add(5)
 	p l.count
 	l.show
+	puts
 	l.add(4)
 	p l.count
 	l.show
+	puts
 	l.add(5)
 	p l.count
 	l.show
+	puts
 	l.add(6)
 	p l.count
 	l.show
+	puts
 	l.add(7)
 	p l.count
 	l.show
-=end
+
+	puts
+	puts
+	puts
 
 	l = LRUCache.new(4)
 
-	l.add("I walk the line")
+	l	.add("I walk the line")
 	l.add(5)
-	p l.count
 	l.add([1, 2, 3])
 	l.add(5)
 	l.add(-5)
@@ -74,3 +82,4 @@ if __FILE__ == $PROGRAM_NAME
 	l.show
 
 end
+
