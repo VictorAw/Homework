@@ -115,6 +115,16 @@ class DblLinkedList
 		NodeIterator.new(node)
 	end
 
+	def insert(insert_after, node_iter)
+		previous = NodeExtractor.new.node(insert_after)
+		node = NodeExtractor.new.node(node_iter)
+
+		node.next = previous.next
+		node.prev = previous
+		previous.next = node
+		node.next.prev = node
+	end
+
 	def delete(node_iter)
 		return head_iter if node_iter == head_iter
 		return tail_iter if node_iter == tail_iter
